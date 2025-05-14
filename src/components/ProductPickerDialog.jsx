@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
 import useInfiniteProducts from "../hooks/useInfiniteProducts";
 import ProductListItem from "./ProductListItem";
+import { Loader2, SearchIcon } from "lucide-react";
 
 export default function ProductPickerDialog({ open, onOpenChange, onSelect }) {
   const { products, fetchProducts, resetSearch, hasMore, loading } =
@@ -98,12 +99,15 @@ export default function ProductPickerDialog({ open, onOpenChange, onSelect }) {
             Choose one or more products and variants from the list below.
           </Dialog.Description>
 
-          <input
-            value={search}
-            onChange={handleSearchChange}
-            placeholder="Search..."
-            className="border px-3 py-2 rounded mb-4"
-          />
+          <div className="relative w-full mb-5">
+            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <input
+              value={search}
+              onChange={handleSearchChange}
+              placeholder="Search..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+            />
+          </div>
 
           <div
             ref={containerRef}
@@ -118,7 +122,11 @@ export default function ProductPickerDialog({ open, onOpenChange, onSelect }) {
               />
             ))}
 
-            {loading && <p className="text-center py-4 text-sm">Loading...</p>}
+            {loading && (
+              <p className="py-4 flex items-center justify-center">
+                <Loader2 className="animate-spin w-12 h-12 text-blue-400" />
+              </p>
+            )}
           </div>
 
           <div className="mt-4 flex justify-end gap-2">
