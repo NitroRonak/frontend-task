@@ -18,6 +18,7 @@ export default function ProductRow({
   onToggleVariantVisibility,
   onVariantReorder,
   isOnlyRow,
+  onRemoveVariant,
 }) {
   const [showDiscount, setShowDiscount] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -144,7 +145,12 @@ export default function ProductRow({
           >
             <ul className="mt-3 ml-4 space-y-1">
               {data.variants.map((variant) => (
-                <SortableVariantItem key={variant.id} variant={variant} />
+                <SortableVariantItem
+                  key={variant.id}
+                  variant={variant}
+                  rowIndex={index}
+                  onRemoveVariant={onRemoveVariant}
+                />
               ))}
             </ul>
           </SortableContext>
@@ -154,7 +160,7 @@ export default function ProductRow({
   );
 }
 
-function SortableVariantItem({ variant }) {
+function SortableVariantItem({ variant,rowIndex, onRemoveVariant }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: variant.id });
 
@@ -167,7 +173,7 @@ function SortableVariantItem({ variant }) {
     <li
       ref={setNodeRef}
       style={style}
-      className="flex px-2 py-1 bg-gray-50 rounded border cursor-move"
+      className="flex px-2 py-1 bg-gray-50 rounded shadow cursor-move"
     >
       <div
         {...attributes}
@@ -179,7 +185,11 @@ function SortableVariantItem({ variant }) {
       </div>
       <div className="flex items-center justify-between w-full">
         <span>{variant.title}</span>
-      <span>${variant.price}</span>
+        <span>${variant.price}</span>
+        <FaTimes
+          className="text-red-500 cursor-pointer"
+          onClick={() => onRemoveVariant(rowIndex, variant.id)}
+        />
       </div>
     </li>
   );
