@@ -2,6 +2,7 @@ import { useState } from "react";
 import ProductRow from "./components/ProductRow";
 import ProductPickerDialog from "./components/ProductPickerDialog";
 import { v4 as uuidv4 } from "uuid";
+import toast from 'react-hot-toast';
 import {
   DndContext,
   closestCenter,
@@ -87,6 +88,7 @@ function App() {
     const updatedRows = [...rows];
     updatedRows[index].showVariants = !updatedRows[index].showVariants;
     setRows(updatedRows);
+
   };
 
   const handleSubmit = () => {
@@ -101,6 +103,7 @@ function App() {
       })),
     }));
     console.log("SUBMIT:", result);
+    toast.success("Products added successfully! 🎉 You can check the console");
   };
 
   const handleVariantReorder = (rowIndex, newVariantOrder) => {
